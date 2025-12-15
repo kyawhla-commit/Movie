@@ -27,14 +27,18 @@ import { GenreType } from "@/types/global";
 import { redirect } from "next/navigation";
 
 async function fetchGneres(): Promise<GenreType[]> {
-  const res = await fetch("https://api.themoviedb.org/3/genre/movie/list", {
-    headers: {
-      Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
-    },
-  });
+  try {
+    const res = await fetch("https://api.themoviedb.org/3/genre/movie/list", {
+      headers: {
+        Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
+      },
+    });
 
-  const data = await res.json();
-  return data.genres;
+    const data = await res.json();
+    return data.genres || [];
+  } catch {
+    return [];
+  }
 }
 
 export default async function RootLayout({
@@ -82,7 +86,7 @@ export default async function RootLayout({
                   All Movies
                 </Link>
               </Button>
-              {genres.map((genre) => {
+              {(genres || []).map((genre) => {
                 return (
                   <Button asChild key={genre.id} variant="outline">
                     <Link
