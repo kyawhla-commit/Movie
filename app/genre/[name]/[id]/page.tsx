@@ -1,4 +1,4 @@
-import Movie from "@/components/movie";
+import MovieGrid from "@/components/movie-grid";
 import { MovieType } from "@/types/global";
 
 async function fetchGenre(id: string): Promise<MovieType[]> {
@@ -11,7 +11,7 @@ async function fetchGenre(id: string): Promise<MovieType[]> {
     }
   );
   const data = await res.json();
-  return data.results;
+  return data.results || [];
 }
 
 export default async function Genre({
@@ -20,16 +20,12 @@ export default async function Genre({
   params: Promise<{ name: string; id: string }>;
 }) {
   const { id, name } = await params;
-  const movies = await fetchGenre(id); 
+  const movies = await fetchGenre(id);
+  const decodedName = decodeURIComponent(name);
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4 pb-2 border-b">{name}</h2>
-      <div className="flex gap-2 flex-wrap">
-        {movies.map((movie) => {
-          return <Movie key={movie.id} movie={movie} />;
-        })}
-      </div>
+    <div className="space-y-6">
+      <MovieGrid movies={movies} title={decodedName} />
     </div>
   );
 }
