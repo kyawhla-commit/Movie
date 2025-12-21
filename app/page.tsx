@@ -42,7 +42,7 @@ export default async function Home() {
 				})}
 			</div>
 
-			<h2 className="text-xl font-bold my-4 pb-2 border-b">Popular</h2>
+			<h2 className="text-xl font-bold my-4 pb-2 border-b">Top Rated</h2>
 			<div className="flex gap-2 flex-wrap">
 				{top.map(movie => {
 					return (
